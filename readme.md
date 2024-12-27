@@ -30,7 +30,7 @@ Esta es una aplicación móvil desarrollada en **React Native** utilizando **Exp
 
     ```bash
     npm install
-3. Modifica la ip del .env con una local para acceder a la api
+3. Modifica la ip del .env con una local para acceder a la api (no vale localhost)
 
     API_URL=IPLOCAL:5000
 
