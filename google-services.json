@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "878406541566",
+    "firebase_url": "https://prueba-ce9c3-default-rtdb.firebaseio.com",
+    "project_id": "prueba-ce9c3",
+    "storage_bucket": "prueba-ce9c3.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:878406541566:android:3e7fc246e49806946885af",
+        "android_client_info": {
+          "package_name": "com.pruebas.luisdemo"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBBrDi9xx9RJYdBaNCRDNAGRGrl-mesPUE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

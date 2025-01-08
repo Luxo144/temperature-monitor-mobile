@@ -1,49 +1,57 @@
-import * as Notifications from 'expo-notifications';
+import messaging from '@react-native-firebase/messaging';
+import * as Device from 'expo-device';
 
-Notifications.setNotificationHandler({
-  handleNotification: async () => ({
-    shouldShowAlert: true,
-    shouldPlaySound: true,
-    shouldSetBadge: false,
-  }),
-});
+const TEMPERATURE_TOPIC = 'temperature_alerts';
+const SERVER_URL = 'http://iplocal:3000';
 
 export const notificationService = {
-  async requestPermissions(): Promise<boolean> {
-    const { status: existingStatus } = await Notifications.getPermissionsAsync();
-    let finalStatus = existingStatus;
+  async requestUserPermission() {
+    if (!Device.isDevice) return false;
     
-    if (existingStatus !== 'granted') {
-      const { status } = await Notifications.requestPermissionsAsync();
-      finalStatus = status;
-    }
-    
-    if (finalStatus !== 'granted') {
-      alert('No se pudo obtener el permiso para las notificaciones');
-      return false;
-    }
-    return true;
+    const authStatus = await messaging().requestPermission();
+    return (
+      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+      authStatus === messaging.AuthorizationStatus.PROVISIONAL
+    );
   },
 
-  async sendNotification(title: string, message: string): Promise<void> {
-    await Notifications.scheduleNotificationAsync({
-      content: {
-        title,
-        body: message,
-      },
-      trigger: null,
-    });
+  async subscribeTopic() {
+    try {
+      await messaging().subscribeToTopic(TEMPERATURE_TOPIC);
+      console.log('Subscribed to temperature alerts');
+    } catch (error) {
+      console.error('Error subscribing to topic:', error);
+    }
   },
 
-  createNotificationListeners() {
-    const notificationListener = Notifications.addNotificationReceivedListener(notification => {
-      console.log('Notification received');
-    });
+  async unsubscribeTopic() {
+    try {
+      await messaging().unsubscribeFromTopic(TEMPERATURE_TOPIC);
+      console.log('Unsubscribed from temperature alerts');
+    } catch (error) {
+      console.error('Error unsubscribing from topic:', error);
+    }
+  },
 
-    const responseListener = Notifications.addNotificationResponseReceivedListener(response => {
-      console.log('Notification response:', response);
-    });
+  async sendTemperatureAlert(temperature: number, min: number, max: number) {
+    try {
+      const response = await fetch(`${SERVER_URL}/send-notification`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ temperature, min, max })
+      });
 
-    return { notificationListener, responseListener };
+      if (!response.ok) {
+        throw new Error('Failed to send notification');
+      }
+    } catch (error) {
+      console.error('Error sending notification:', error);
+    }
+  },
+
+  onMessage(callback: (message: any) => void) {
+    return messaging().onMessage(callback);
   }
 };

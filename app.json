@@ -19,10 +19,32 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.pruebas.luisdemo",
+      "googleServicesFile": "./google-services.json"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      "@react-native-firebase/app",
+      [
+        "expo-dev-launcher",
+        {
+          "launchMode": "most-recent"
+        }
+      ],
+      [
+        "@react-native-firebase/messaging",
+        {
+          "messaging_android_notification_channel_id": "high-priority"
+        }
+      ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "d11be34a-7874-4588-9df9-6f7cb02e77ea"
+      }
     }
   }
 }

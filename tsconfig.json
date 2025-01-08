@@ -3,6 +3,8 @@
   "compilerOptions": {
     "strict": true,
     "typeRoots": ["./src/types"],
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
     "paths": {
       "@env": ["./node_modules/react-native-dotenv"]
     }
